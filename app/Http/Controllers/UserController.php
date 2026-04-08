@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
+    // Handle login form submission.
+    // Auth::attempt tries to authenticate with the provided credentials.
     public function login(Request $request){
         $incomingFields = $request->validate([
             'loginname' => 'required',
@@ -22,11 +24,14 @@ class UserController extends Controller
         return redirect('/');
     }
 
+    // Log the current user out and redirect to home.
     public function logout(){
         Auth::logout();
         return redirect('/');
     }
 
+    // Register a new user, hash the password, create the user,
+    // then log them in immediately.
     public function register(Request $request){
         $incomingFields = $request->validate([
             'name' => ['required', 'min:3', 'max:20', Rule::unique('users', 'name')],
